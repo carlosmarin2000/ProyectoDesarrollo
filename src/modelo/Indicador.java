@@ -6,16 +6,15 @@
 package modelo;
 
 import java.io.Serializable;
-import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -27,43 +26,40 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Indicador.findAll", query = "SELECT i FROM Indicador i")
-    , @NamedQuery(name = "Indicador.findByCodigoIndicador", query = "SELECT i FROM Indicador i WHERE i.codigoIndicador = :codigoIndicador")
-    , @NamedQuery(name = "Indicador.findByDescripcion", query = "SELECT i FROM Indicador i WHERE i.descripcion = :descripcion")
-    , @NamedQuery(name = "Indicador.findByFecha", query = "SELECT i FROM Indicador i WHERE i.fecha = :fecha")})
+    , @NamedQuery(name = "Indicador.findByCodIndicador", query = "SELECT i FROM Indicador i WHERE i.codIndicador = :codIndicador")
+    , @NamedQuery(name = "Indicador.findByDescripcion", query = "SELECT i FROM Indicador i WHERE i.descripcion = :descripcion")})
 public class Indicador implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Column(name = "codigo indicador")
-    private Integer codigoIndicador;
+    @Column(name = "codIndicador")
+    private Integer codIndicador;
     @Basic(optional = false)
     @Column(name = "descripcion")
     private String descripcion;
-    @Basic(optional = false)
-    @Column(name = "fecha")
-    @Temporal(TemporalType.DATE)
-    private Date fecha;
+    @JoinColumn(name = "codObj", referencedColumnName = "codObjetivo")
+    @ManyToOne(optional = false)
+    private Objetivo codObj;
 
     public Indicador() {
     }
 
-    public Indicador(Integer codigoIndicador) {
-        this.codigoIndicador = codigoIndicador;
+    public Indicador(Integer codIndicador) {
+        this.codIndicador = codIndicador;
     }
 
-    public Indicador(Integer codigoIndicador, String descripcion, Date fecha) {
-        this.codigoIndicador = codigoIndicador;
+    public Indicador(Integer codIndicador, String descripcion) {
+        this.codIndicador = codIndicador;
         this.descripcion = descripcion;
-        this.fecha = fecha;
     }
 
-    public Integer getCodigoIndicador() {
-        return codigoIndicador;
+    public Integer getCodIndicador() {
+        return codIndicador;
     }
 
-    public void setCodigoIndicador(Integer codigoIndicador) {
-        this.codigoIndicador = codigoIndicador;
+    public void setCodIndicador(Integer codIndicador) {
+        this.codIndicador = codIndicador;
     }
 
     public String getDescripcion() {
@@ -74,18 +70,18 @@ public class Indicador implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public Date getFecha() {
-        return fecha;
+    public Objetivo getCodObj() {
+        return codObj;
     }
 
-    public void setFecha(Date fecha) {
-        this.fecha = fecha;
+    public void setCodObj(Objetivo codObj) {
+        this.codObj = codObj;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (codigoIndicador != null ? codigoIndicador.hashCode() : 0);
+        hash += (codIndicador != null ? codIndicador.hashCode() : 0);
         return hash;
     }
 
@@ -96,7 +92,7 @@ public class Indicador implements Serializable {
             return false;
         }
         Indicador other = (Indicador) object;
-        if ((this.codigoIndicador == null && other.codigoIndicador != null) || (this.codigoIndicador != null && !this.codigoIndicador.equals(other.codigoIndicador))) {
+        if ((this.codIndicador == null && other.codIndicador != null) || (this.codIndicador != null && !this.codIndicador.equals(other.codIndicador))) {
             return false;
         }
         return true;
@@ -104,7 +100,7 @@ public class Indicador implements Serializable {
 
     @Override
     public String toString() {
-        return "modelo.Indicador[ codigoIndicador=" + codigoIndicador + " ]";
+        return "modelo.Indicador[ codIndicador=" + codIndicador + " ]";
     }
     
 }

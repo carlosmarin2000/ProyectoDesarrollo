@@ -22,19 +22,19 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Lenovo
  */
 @Entity
-@Table(name = "meta")
+@Table(name = "iniciativa")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Meta.findAll", query = "SELECT m FROM Meta m")
-    , @NamedQuery(name = "Meta.findByCodigoMeta", query = "SELECT m FROM Meta m WHERE m.codigoMeta = :codigoMeta")
-    , @NamedQuery(name = "Meta.findByDescripcion", query = "SELECT m FROM Meta m WHERE m.descripcion = :descripcion")})
-public class Meta implements Serializable {
+    @NamedQuery(name = "Iniciativa.findAll", query = "SELECT i FROM Iniciativa i")
+    , @NamedQuery(name = "Iniciativa.findByCodIniciativa", query = "SELECT i FROM Iniciativa i WHERE i.codIniciativa = :codIniciativa")
+    , @NamedQuery(name = "Iniciativa.findByDescripcion", query = "SELECT i FROM Iniciativa i WHERE i.descripcion = :descripcion")})
+public class Iniciativa implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Column(name = "codigoMeta")
-    private Integer codigoMeta;
+    @Column(name = "codIniciativa")
+    private Integer codIniciativa;
     @Basic(optional = false)
     @Column(name = "descripcion")
     private String descripcion;
@@ -42,24 +42,24 @@ public class Meta implements Serializable {
     @ManyToOne(optional = false)
     private Objetivo codObj;
 
-    public Meta() {
+    public Iniciativa() {
     }
 
-    public Meta(Integer codigoMeta) {
-        this.codigoMeta = codigoMeta;
+    public Iniciativa(Integer codIniciativa) {
+        this.codIniciativa = codIniciativa;
     }
 
-    public Meta(Integer codigoMeta, String descripcion) {
-        this.codigoMeta = codigoMeta;
+    public Iniciativa(Integer codIniciativa, String descripcion) {
+        this.codIniciativa = codIniciativa;
         this.descripcion = descripcion;
     }
 
-    public Integer getCodigoMeta() {
-        return codigoMeta;
+    public Integer getCodIniciativa() {
+        return codIniciativa;
     }
 
-    public void setCodigoMeta(Integer codigoMeta) {
-        this.codigoMeta = codigoMeta;
+    public void setCodIniciativa(Integer codIniciativa) {
+        this.codIniciativa = codIniciativa;
     }
 
     public String getDescripcion() {
@@ -81,18 +81,18 @@ public class Meta implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (codigoMeta != null ? codigoMeta.hashCode() : 0);
+        hash += (codIniciativa != null ? codIniciativa.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Meta)) {
+        if (!(object instanceof Iniciativa)) {
             return false;
         }
-        Meta other = (Meta) object;
-        if ((this.codigoMeta == null && other.codigoMeta != null) || (this.codigoMeta != null && !this.codigoMeta.equals(other.codigoMeta))) {
+        Iniciativa other = (Iniciativa) object;
+        if ((this.codIniciativa == null && other.codIniciativa != null) || (this.codIniciativa != null && !this.codIniciativa.equals(other.codIniciativa))) {
             return false;
         }
         return true;
@@ -100,7 +100,7 @@ public class Meta implements Serializable {
 
     @Override
     public String toString() {
-        return "modelo.Meta[ codigoMeta=" + codigoMeta + " ]";
+        return "modelo.Iniciativa[ codIniciativa=" + codIniciativa + " ]";
     }
     
 }

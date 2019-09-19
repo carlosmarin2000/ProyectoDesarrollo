@@ -41,7 +41,7 @@ public class IndicadorJpaController implements Serializable {
             em.persist(indicador);
             em.getTransaction().commit();
         } catch (Exception ex) {
-            if (findIndicador(indicador.getCodigoIndicador()) != null) {
+            if (findIndicador(indicador.getCodIndicador()) != null) {
                 throw new PreexistingEntityException("Indicador " + indicador + " already exists.", ex);
             }
             throw ex;
@@ -62,7 +62,7 @@ public class IndicadorJpaController implements Serializable {
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                Integer id = indicador.getCodigoIndicador();
+                Integer id = indicador.getCodIndicador();
                 if (findIndicador(id) == null) {
                     throw new NonexistentEntityException("The indicador with id " + id + " no longer exists.");
                 }
@@ -83,7 +83,7 @@ public class IndicadorJpaController implements Serializable {
             Indicador indicador;
             try {
                 indicador = em.getReference(Indicador.class, id);
-                indicador.getCodigoIndicador();
+                indicador.getCodIndicador();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The indicador with id " + id + " no longer exists.", enfe);
             }

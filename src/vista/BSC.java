@@ -5,17 +5,260 @@
  */
 package vista;
 
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import logica.usuarioLog;
+import modelo.Usuario;
+
 /**
  *
  * @author Lenovo
  */
 public class BSC extends javax.swing.JFrame {
-
+    private usuarioLog usuLog = new usuarioLog();
+    private List<Usuario> ListUsuarios;
+    String area, nameUs, msgBienvenida;
+    int cantidadRow; //10
+    String matriz[][];
+    int codUsuario;
     /**
      * Creates new form BSC
      */
-    public BSC() {
+    public BSC(int user) {
+        super(".:BSC:.");
+        area = usuLog.retornarArea(user);
+        nameUs = usuLog.retornarNameU(user);
+        msgBienvenida = "Bienvenido Señor(a): "+nameUs;
         initComponents();
+        this.setLocationRelativeTo(null); 
+        cantidadRow = usuLog.cantidadObj(user);
+        matriz = new String[cantidadRow][2];
+        
+        //Llenar tabla clientes************
+        for(int i=0; i<cantidadRow;i++){
+            matriz[i][0] = usuLog.retornarDescripcion(user, "Objetivo");
+            matriz[i][1] = usuLog.retornarDescripcion(user, "Indicador");
+        }
+        
+        tablaC.setModel(new javax.swing.table.DefaultTableModel(
+            matriz,
+            new String [] {
+                "Objetivo", "Indicadores"
+            }
+        ));
+        //*********************************
+        
+        //Llenar tabla financiero************
+        for(int i=0; i<cantidadRow;i++){
+            matriz[i][0] = usuLog.retornarDescripcion(user, "Objetivo");
+            matriz[i][1] = usuLog.retornarDescripcion(user, "Indicador");
+        }
+        
+        tablaFinanc.setModel(new javax.swing.table.DefaultTableModel(
+            matriz,
+            new String [] {
+                "Objetivo", "Indicadores"
+            }
+        ));
+        //*********************************
+        
+        //Llenar tabla procesos Internos******
+        for(int i=0; i<cantidadRow;i++){
+            matriz[i][0] = usuLog.retornarDescripcion(user, "Objetivo");
+            matriz[i][1] = usuLog.retornarDescripcion(user, "Indicador");
+        }
+        
+        tablaProcI.setModel(new javax.swing.table.DefaultTableModel(
+            matriz,
+            new String [] {
+                "Objetivo", "Indicadores"
+            }
+        ));
+        //*********************************
+        
+        //Llenar tabla Aprendizaje y Crecimiento************
+        for(int i=0; i<cantidadRow;i++){
+            matriz[i][0] = usuLog.retornarDescripcion(user, "Objetivo");
+            matriz[i][1] = usuLog.retornarDescripcion(user, "Indicador");
+        }
+        
+        tablaAprenC.setModel(new javax.swing.table.DefaultTableModel(
+            matriz,
+            new String [] {
+                "Objetivo", "Indicadores"
+            }
+        ));
+        //*********************************
+               
+        //Bloquear botones de la interfaz
+        if(area.equals("Financiero")){
+            bienvenido.setText(msgBienvenida);
+            //Bloquea los botones del area Aprendizaje y Crecimiento
+            agregarAprenC.setEnabled(false);
+            eliminarAprenC.setEnabled(false);
+            modificarAprenC.setEnabled(false);
+            vermoreAprenC.setEnabled(false);
+            
+            //Bloquea los botones del area Clientes
+            agregarC.setEnabled(false);
+            eliminarC.setEnabled(false);
+            modificarC.setEnabled(false);
+            vermoreC.setEnabled(false);
+            
+            //Bloquea los botones del area Procesos Internos
+            agregarProcI.setEnabled(false);
+            eliminarProcI.setEnabled(false);
+            modificarProcI.setEnabled(false);
+            vermoreProcI.setEnabled(false);
+        }  
+        
+        else if(area.equals("Clientes")){
+            bienvenido.setText(msgBienvenida);
+            //Bloquea los botones del area Aprendizaje y Crecimiento
+            agregarAprenC.setEnabled(false);
+            eliminarAprenC.setEnabled(false);
+            modificarAprenC.setEnabled(false);
+            vermoreAprenC.setEnabled(false);
+            
+            //Bloquea los botones del area Financiera
+            agregarFinanc.setEnabled(false);
+            eliminarFinanc.setEnabled(false);
+            modificarFinanc.setEnabled(false);
+            vermoreFinanc.setEnabled(false);
+            
+            //Bloquea los botones del area Procesos Internos
+            agregarProcI.setEnabled(false);
+            eliminarProcI.setEnabled(false);
+            modificarProcI.setEnabled(false);
+            vermoreProcI.setEnabled(false);
+        }
+        
+        else if(area.equals("Procesos Internos")){
+            bienvenido.setText(msgBienvenida);
+            //Bloquea los botones del area Aprendizaje y Crecimiento
+            agregarAprenC.setEnabled(false);
+            eliminarAprenC.setEnabled(false);
+            modificarAprenC.setEnabled(false);
+            vermoreAprenC.setEnabled(false);
+            
+            //Bloquea los botones del area Financiera
+            agregarFinanc.setEnabled(false);
+            eliminarFinanc.setEnabled(false);
+            modificarFinanc.setEnabled(false);
+            vermoreFinanc.setEnabled(false);
+            
+            //Bloquea los botones del area Clientes
+            agregarC.setEnabled(false);
+            eliminarC.setEnabled(false);
+            modificarC.setEnabled(false);
+            vermoreC.setEnabled(false);
+        }
+        
+        else if(area.equals("Aprendizaje y Crecimiento")){
+            bienvenido.setText(msgBienvenida);
+            //Bloquea los botones del area Procesos Internos
+            agregarProcI.setEnabled(false);
+            eliminarProcI.setEnabled(false);
+            modificarProcI.setEnabled(false);
+            vermoreProcI.setEnabled(false);
+            
+            //Bloquea los botones del area Financiera
+            agregarFinanc.setEnabled(false);
+            eliminarFinanc.setEnabled(false);
+            modificarFinanc.setEnabled(false);
+            vermoreFinanc.setEnabled(false);
+            
+            //Bloquea los botones del area Clientes
+            agregarC.setEnabled(false);
+            eliminarC.setEnabled(false);
+            modificarC.setEnabled(false);
+            vermoreC.setEnabled(false);
+        }
+    }
+    
+    public BSC(){
+        super(".:BSC:.");
+        initComponents();
+        msgBienvenida = "Bienvenido Señor(a): Administrador";
+        bienvenido.setText(msgBienvenida);
+        this.setLocationRelativeTo(null);
+        codUsuario = 0;
+        cantidadRow = 0;
+        ListUsuarios = usuLog.consultar();
+        
+        for(Usuario u: ListUsuarios){
+            codUsuario = u.getCodigo();
+            
+            if(u.getTipoArea().equals("Cliente")){
+                cantidadRow = usuLog.cantidadObj(codUsuario);
+                matriz = new String[cantidadRow][2];
+
+                //Llenar tabla clientes************
+                for(int i=0; i<cantidadRow;i++){
+                    matriz[i][0] = usuLog.retornarDescripcion(codUsuario, "Objetivo");
+                    matriz[i][1] = usuLog.retornarDescripcion(codUsuario, "Indicador");
+                }
+
+                tablaC.setModel(new javax.swing.table.DefaultTableModel(
+                    matriz,
+                    new String [] {
+                        "Objetivo", "Indicadores"
+                    }
+                ));
+            //*********************************
+            }
+            else if(u.getTipoArea().equals("Financiero")){
+                //Llenar tabla financiero************
+                for(int i=0; i<cantidadRow;i++){
+                    matriz[i][0] = usuLog.retornarDescripcion(codUsuario, "Objetivo");
+                    matriz[i][1] = usuLog.retornarDescripcion(codUsuario, "Indicador");
+                }
+
+                tablaFinanc.setModel(new javax.swing.table.DefaultTableModel(
+                    matriz,
+                    new String [] {
+                        "Objetivo", "Indicadores"
+                    }
+                ));
+                //***************************************
+            }
+            
+            else if(u.getTipoArea().equals("Procesos Internos")){
+               //Llenar tabla Procesos Internos************
+                for(int i=0; i<cantidadRow;i++){
+                    matriz[i][0] = usuLog.retornarDescripcion(codUsuario, "Objetivo");
+                    matriz[i][1] = usuLog.retornarDescripcion(codUsuario, "Indicador");
+                }
+
+                tablaProcI.setModel(new javax.swing.table.DefaultTableModel(
+                    matriz,
+                    new String [] {
+                        "Objetivo", "Indicadores"
+                    }
+                ));
+                //*************************************** 
+            }
+            
+            else if(u.getTipoArea().equals("Aprendizaje y Crecimiento")){
+                //Llenar tabla Aprendizaje y Crecimiento************
+                for(int i=0; i<cantidadRow;i++){
+                    matriz[i][0] = usuLog.retornarDescripcion(codUsuario, "Objetivo");
+                    matriz[i][1] = usuLog.retornarDescripcion(codUsuario, "Indicador");
+                }
+
+                tablaAprenC.setModel(new javax.swing.table.DefaultTableModel(
+                    matriz,
+                    new String [] {
+                        "Objetivo", "Indicadores"
+                    }
+                ));
+                //*************************************** 
+            }
+            
+        }
+
     }
 
     /**
@@ -28,197 +271,379 @@ public class BSC extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
+        bienvenido = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tablaC = new javax.swing.JTable();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
-        jButton7 = new javax.swing.JButton();
-        jButton8 = new javax.swing.JButton();
+        agregarFinanc = new javax.swing.JButton();
+        modificarAprenC = new javax.swing.JButton();
+        agregarProcI = new javax.swing.JButton();
+        eliminarProcI = new javax.swing.JButton();
+        agregarAprenC = new javax.swing.JButton();
+        eliminarAprenC = new javax.swing.JButton();
+        agregarC = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTable3 = new javax.swing.JTable();
+        tablaFinanc = new javax.swing.JTable();
         jScrollPane5 = new javax.swing.JScrollPane();
-        jTable5 = new javax.swing.JTable();
+        tablaProcI = new javax.swing.JTable();
         jScrollPane4 = new javax.swing.JScrollPane();
-        jTable4 = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
-        jButton10 = new javax.swing.JButton();
-        jButton11 = new javax.swing.JButton();
-        jButton12 = new javax.swing.JButton();
-        jButton13 = new javax.swing.JButton();
-        jButton14 = new javax.swing.JButton();
+        tablaAprenC = new javax.swing.JTable();
+        atrasBSC = new javax.swing.JButton();
+        eliminarFinanc = new javax.swing.JButton();
+        modificarFinanc = new javax.swing.JButton();
+        modificarC = new javax.swing.JButton();
+        eliminarC = new javax.swing.JButton();
+        modificarProcI = new javax.swing.JButton();
+        vermoreFinanc = new javax.swing.JButton();
+        vermoreProcI = new javax.swing.JButton();
+        vermoreAprenC = new javax.swing.JButton();
+        vermoreC = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel6.setText("Clientes");
-        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 340, 390, 40));
 
-        jLabel7.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel7.setText("Bienvenido Señor(a): ");
-        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 0, 430, 40));
+        bienvenido.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        bienvenido.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        bienvenido.setText("Bienvenido Señor(a): ");
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tablaC.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        tablaC.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
+
             },
             new String [] {
                 "Objetivo", "Indicadores"
             }
         ));
-        jScrollPane2.setViewportView(jTable2);
-
-        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 400, 380, 90));
+        jScrollPane2.setViewportView(tablaC);
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel8.setText("Financiero");
-        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 50, 390, 40));
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel9.setText("Procesos Internos");
-        getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 50, 390, 40));
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel10.setText("Aprendizaje y Crecimiento");
-        getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 340, 390, 40));
 
-        jButton2.setText("Agregar");
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 210, -1, -1));
-
-        jButton3.setText("Modificar");
-        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 520, -1, -1));
-
-        jButton4.setText("Agregar");
-        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 210, -1, -1));
-
-        jButton5.setText("Eliminar");
-        getContentPane().add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 210, -1, -1));
-
-        jButton6.setText("Agregar");
-        getContentPane().add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 520, -1, -1));
-
-        jButton7.setText("Eliminar");
-        getContentPane().add(jButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 520, -1, -1));
-
-        jButton8.setText("Agregar");
-        getContentPane().add(jButton8, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 520, -1, -1));
-
-        jTable3.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
-            },
-            new String [] {
-                "Objetivo", "Indicadores"
-            }
-        ));
-        jScrollPane3.setViewportView(jTable3);
-
-        getContentPane().add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 100, 380, 90));
-
-        jTable5.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
-            },
-            new String [] {
-                "Objetivo", "Indicadores"
-            }
-        ));
-        jScrollPane5.setViewportView(jTable5);
-
-        getContentPane().add(jScrollPane5, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 100, 380, 90));
-
-        jTable4.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
-            },
-            new String [] {
-                "Objetivo", "Indicadores"
-            }
-        ));
-        jScrollPane4.setViewportView(jTable4);
-
-        getContentPane().add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 400, 380, 90));
-
-        jButton1.setText("Atras");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        agregarFinanc.setText("Agregar");
+        agregarFinanc.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                agregarFinancActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
-        jButton10.setText("Eliminar");
-        getContentPane().add(jButton10, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 210, -1, -1));
+        modificarAprenC.setText("Modificar");
 
-        jButton11.setText("Modificar");
-        getContentPane().add(jButton11, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 210, -1, -1));
+        agregarProcI.setText("Agregar");
+        agregarProcI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                agregarProcIActionPerformed(evt);
+            }
+        });
 
-        jButton12.setText("Modificar");
-        getContentPane().add(jButton12, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 520, -1, -1));
+        eliminarProcI.setText("Eliminar");
+        eliminarProcI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                eliminarProcIActionPerformed(evt);
+            }
+        });
 
-        jButton13.setText("Eliminar");
-        getContentPane().add(jButton13, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 520, -1, -1));
+        agregarAprenC.setText("Agregar");
+        agregarAprenC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                agregarAprenCActionPerformed(evt);
+            }
+        });
 
-        jButton14.setText("Modificiar");
-        getContentPane().add(jButton14, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 210, -1, -1));
+        eliminarAprenC.setText("Eliminar");
+        eliminarAprenC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                eliminarAprenCActionPerformed(evt);
+            }
+        });
+
+        agregarC.setText("Agregar");
+        agregarC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                agregarCActionPerformed(evt);
+            }
+        });
+
+        tablaFinanc.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        tablaFinanc.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Objetivo", "Indicadores"
+            }
+        ));
+        jScrollPane3.setViewportView(tablaFinanc);
+
+        tablaProcI.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        tablaProcI.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Objetivo", "Indicadores"
+            }
+        ));
+        jScrollPane5.setViewportView(tablaProcI);
+
+        tablaAprenC.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        tablaAprenC.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Objetivo", "Indicadores"
+            }
+        ));
+        jScrollPane4.setViewportView(tablaAprenC);
+
+        atrasBSC.setText("Atras");
+        atrasBSC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                atrasBSCActionPerformed(evt);
+            }
+        });
+
+        eliminarFinanc.setText("Eliminar");
+        eliminarFinanc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                eliminarFinancActionPerformed(evt);
+            }
+        });
+
+        modificarFinanc.setText("Modificar");
+        modificarFinanc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                modificarFinancActionPerformed(evt);
+            }
+        });
+
+        modificarC.setText("Modificar");
+
+        eliminarC.setText("Eliminar");
+        eliminarC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                eliminarCActionPerformed(evt);
+            }
+        });
+
+        modificarProcI.setText("Modificiar");
+
+        vermoreFinanc.setText("Ver más");
+
+        vermoreProcI.setText("Ver más");
+
+        vermoreAprenC.setText("Ver más");
+
+        vermoreC.setText("Ver más");
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(atrasBSC)
+                        .addGap(171, 171, 171)
+                        .addComponent(bienvenido, javax.swing.GroupLayout.PREFERRED_SIZE, 430, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 390, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(40, 40, 40)
+                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 390, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 390, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(50, 50, 50)
+                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 390, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(30, 30, 30)
+                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(40, 40, 40)
+                                .addComponent(agregarFinanc)
+                                .addGap(19, 19, 19)
+                                .addComponent(eliminarFinanc)
+                                .addGap(18, 18, 18)
+                                .addComponent(modificarFinanc)
+                                .addGap(18, 18, 18)
+                                .addComponent(vermoreFinanc)))
+                        .addGap(50, 50, 50)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(12, 12, 12)
+                                .addComponent(agregarProcI)
+                                .addGap(18, 18, 18)
+                                .addComponent(eliminarProcI)
+                                .addGap(18, 18, 18)
+                                .addComponent(modificarProcI)
+                                .addGap(18, 18, 18)
+                                .addComponent(vermoreProcI))
+                            .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(agregarAprenC)
+                                .addGap(18, 18, 18)
+                                .addComponent(eliminarAprenC)
+                                .addGap(18, 18, 18)
+                                .addComponent(modificarAprenC)
+                                .addGap(18, 18, 18)
+                                .addComponent(vermoreAprenC)
+                                .addGap(120, 120, 120)
+                                .addComponent(agregarC)
+                                .addGap(18, 18, 18)
+                                .addComponent(eliminarC)
+                                .addGap(18, 18, 18)
+                                .addComponent(modificarC)
+                                .addGap(18, 18, 18)
+                                .addComponent(vermoreC))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(50, 50, 50)
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(atrasBSC)
+                    .addComponent(bienvenido, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(10, 10, 10)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(10, 10, 10)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(20, 20, 20)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(agregarFinanc)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(eliminarFinanc)
+                        .addComponent(modificarFinanc)
+                        .addComponent(vermoreFinanc))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(eliminarProcI)
+                        .addComponent(agregarProcI)
+                        .addComponent(modificarProcI)
+                        .addComponent(vermoreProcI)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(20, 20, 20)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(30, 30, 30)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(agregarAprenC)
+                    .addComponent(eliminarAprenC)
+                    .addComponent(modificarAprenC)
+                    .addComponent(vermoreAprenC)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(agregarC)
+                        .addComponent(eliminarC)
+                        .addComponent(modificarC)
+                        .addComponent(vermoreC)))
+                .addGap(49, 49, 49))
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void atrasBSCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_atrasBSCActionPerformed
         Login inicio  = new Login();
         inicio.setVisible(true);
         dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_atrasBSCActionPerformed
 
+    private void agregarFinancActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarFinancActionPerformed
+        if(cantidadRow <= 10){
+            areaFinan arF = new areaFinan();
+            arF.setVisible(true);
+            dispose();
+        }
+        else{
+            JOptionPane.showMessageDialog(null,"Ya cumplió con el limite de filas(10)");
+        }
+    }//GEN-LAST:event_agregarFinancActionPerformed
+
+    private void agregarProcIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarProcIActionPerformed
+        if(cantidadRow <= 10){
+            areaProcInt arPI = new areaProcInt();
+            arPI.setVisible(true);
+            dispose();
+        }
+        else{
+            JOptionPane.showMessageDialog(null,"Ya cumplió con el limite de filas(10)");
+        }
+    }//GEN-LAST:event_agregarProcIActionPerformed
+
+    private void agregarAprenCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarAprenCActionPerformed
+        if(cantidadRow <= 10){
+            areaAprenyCrec arAC = new areaAprenyCrec();
+            arAC.setVisible(true);
+            dispose();
+        }
+        else{
+            JOptionPane.showMessageDialog(null,"Ya cumplió con el limite de filas(10)");
+        }
+    }//GEN-LAST:event_agregarAprenCActionPerformed
+
+    private void agregarCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarCActionPerformed
+        if(cantidadRow <= 10){
+            areaCliente arC = new areaCliente();
+            arC.setVisible(true);
+            dispose();
+        }
+        else{
+            JOptionPane.showMessageDialog(null,"Ya cumplió con el limite de filas(10)");
+        }
+    }//GEN-LAST:event_agregarCActionPerformed
+
+    private void eliminarFinancActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarFinancActionPerformed
+        
+    }//GEN-LAST:event_eliminarFinancActionPerformed
+
+    private void eliminarProcIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarProcIActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_eliminarProcIActionPerformed
+
+    private void eliminarAprenCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarAprenCActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_eliminarAprenCActionPerformed
+
+    private void eliminarCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarCActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_eliminarCActionPerformed
+
+    private void modificarFinancActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modificarFinancActionPerformed
+        
+    }//GEN-LAST:event_modificarFinancActionPerformed
+    
+    
     /**
      * @param args the command line arguments
      */
@@ -255,31 +680,35 @@ public class BSC extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton10;
-    private javax.swing.JButton jButton11;
-    private javax.swing.JButton jButton12;
-    private javax.swing.JButton jButton13;
-    private javax.swing.JButton jButton14;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
+    private javax.swing.JButton agregarAprenC;
+    private javax.swing.JButton agregarC;
+    private javax.swing.JButton agregarFinanc;
+    private javax.swing.JButton agregarProcI;
+    private javax.swing.JButton atrasBSC;
+    private javax.swing.JLabel bienvenido;
+    private javax.swing.JButton eliminarAprenC;
+    private javax.swing.JButton eliminarC;
+    private javax.swing.JButton eliminarFinanc;
+    private javax.swing.JButton eliminarProcI;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
-    private javax.swing.JTable jTable2;
-    private javax.swing.JTable jTable3;
-    private javax.swing.JTable jTable4;
-    private javax.swing.JTable jTable5;
+    private javax.swing.JButton modificarAprenC;
+    private javax.swing.JButton modificarC;
+    private javax.swing.JButton modificarFinanc;
+    private javax.swing.JButton modificarProcI;
+    private javax.swing.JTable tablaAprenC;
+    private javax.swing.JTable tablaC;
+    private javax.swing.JTable tablaFinanc;
+    private javax.swing.JTable tablaProcI;
+    private javax.swing.JButton vermoreAprenC;
+    private javax.swing.JButton vermoreC;
+    private javax.swing.JButton vermoreFinanc;
+    private javax.swing.JButton vermoreProcI;
     // End of variables declaration//GEN-END:variables
 }

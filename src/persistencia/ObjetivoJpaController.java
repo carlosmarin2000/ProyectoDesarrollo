@@ -62,7 +62,7 @@ public class ObjetivoJpaController implements Serializable {
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                String id = objetivo.getCodObjetivo();
+                Integer id = objetivo.getCodObjetivo();
                 if (findObjetivo(id) == null) {
                     throw new NonexistentEntityException("The objetivo with id " + id + " no longer exists.");
                 }
@@ -120,7 +120,7 @@ public class ObjetivoJpaController implements Serializable {
         }
     }
 
-    public Objetivo findObjetivo(String id) {
+    public Objetivo findObjetivo(Integer id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(Objetivo.class, id);

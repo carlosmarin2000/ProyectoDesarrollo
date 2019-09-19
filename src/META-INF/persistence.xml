@@ -4,9 +4,10 @@
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>modelo.Indicador</class>
     <class>modelo.Usuario</class>
-    <class>modelo.Instancia</class>
     <class>modelo.Meta</class>
     <class>modelo.Objetivo</class>
+    <class>modelo.Iniciativa</class>
+    <class>modelo.Usuario_1</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/bsc?zeroDateTimeBehavior=convertToNull"/>
       <property name="javax.persistence.jdbc.user" value="root"/>

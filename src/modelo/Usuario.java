@@ -6,14 +6,18 @@
 package modelo;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -28,11 +32,14 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Usuario.findByNombre", query = "SELECT u FROM Usuario u WHERE u.nombre = :nombre")
     , @NamedQuery(name = "Usuario.findByApellido", query = "SELECT u FROM Usuario u WHERE u.apellido = :apellido")
     , @NamedQuery(name = "Usuario.findByCedula", query = "SELECT u FROM Usuario u WHERE u.cedula = :cedula")
-    , @NamedQuery(name = "Usuario.findByTipoDeArea", query = "SELECT u FROM Usuario u WHERE u.tipoDeArea = :tipoDeArea")
+    , @NamedQuery(name = "Usuario.findByTipoArea", query = "SELECT u FROM Usuario u WHERE u.tipoArea = :tipoArea")
     , @NamedQuery(name = "Usuario.findByTelefono", query = "SELECT u FROM Usuario u WHERE u.telefono = :telefono")
     , @NamedQuery(name = "Usuario.findByPassword", query = "SELECT u FROM Usuario u WHERE u.password = :password")
     , @NamedQuery(name = "Usuario.findByDireccion", query = "SELECT u FROM Usuario u WHERE u.direccion = :direccion")})
 public class Usuario implements Serializable {
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codUsuario")
+    private List<Objetivo> objetivoList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -49,8 +56,8 @@ public class Usuario implements Serializable {
     @Column(name = "cedula")
     private String cedula;
     @Basic(optional = false)
-    @Column(name = "tipo de area")
-    private String tipoDeArea;
+    @Column(name = "tipoArea")
+    private String tipoArea;
     @Basic(optional = false)
     @Column(name = "telefono")
     private String telefono;
@@ -68,12 +75,12 @@ public class Usuario implements Serializable {
         this.codigo = codigo;
     }
 
-    public Usuario(Integer codigo, String nombre, String apellido, String cedula, String tipoDeArea, String telefono, String password, String direccion) {
+    public Usuario(Integer codigo, String nombre, String apellido, String cedula, String tipoArea, String telefono, String password, String direccion) {
         this.codigo = codigo;
         this.nombre = nombre;
         this.apellido = apellido;
         this.cedula = cedula;
-        this.tipoDeArea = tipoDeArea;
+        this.tipoArea = tipoArea;
         this.telefono = telefono;
         this.password = password;
         this.direccion = direccion;
@@ -111,12 +118,12 @@ public class Usuario implements Serializable {
         this.cedula = cedula;
     }
 
-    public String getTipoDeArea() {
-        return tipoDeArea;
+    public String getTipoArea() {
+        return tipoArea;
     }
 
-    public void setTipoDeArea(String tipoDeArea) {
-        this.tipoDeArea = tipoDeArea;
+    public void setTipoArea(String tipoArea) {
+        this.tipoArea = tipoArea;
     }
 
     public String getTelefono() {
@@ -166,6 +173,15 @@ public class Usuario implements Serializable {
     @Override
     public String toString() {
         return "modelo.Usuario[ codigo=" + codigo + " ]";
+    }
+
+    @XmlTransient
+    public List<Objetivo> getObjetivoList() {
+        return objetivoList;
+    }
+
+    public void setObjetivoList(List<Objetivo> objetivoList) {
+        this.objetivoList = objetivoList;
     }
     
 }
