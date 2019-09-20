@@ -7,6 +7,8 @@ package logica;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import modelo.Indicador;
 import modelo.Iniciativa;
 import modelo.Meta;
@@ -17,6 +19,7 @@ import persistencia.IniciativaJpaController;
 import persistencia.MetaJpaController;
 import persistencia.ObjetivoJpaController;
 import persistencia.UsuarioJpaController;
+import persistencia.exceptions.NonexistentEntityException;
 
 /**
  *
@@ -43,6 +46,85 @@ public class usuarioLog {
         return controlUsuario.findUsuarioEntities();
     }
     
+    //Buscar un usuario por el codigo y retornarlo
+    public Usuario consultarUser(int us){
+        listUsers = controlUsuario.findUsuarioEntities();
+        Usuario user = new Usuario();
+        for(Usuario u: listUsers){
+            if(u.getCodigo() == us){
+                user = u;
+              }
+          }
+        return user;
+    }
+    
+    //Buscar un usuario por la cedula y retornarlo
+    public Usuario consultarUserCed(String ced){
+        listUsers = controlUsuario.findUsuarioEntities();
+        Usuario user = new Usuario();
+        for(Usuario u: listUsers){
+            if(u.getCedula().equals(ced)){
+                user = u;
+              }
+          }
+        return user;
+    }
+    
+    //Crear un usuario
+    public void crearUser(Usuario u) throws Exception{
+        if(u == null){
+            throw new Exception("El usuario no tiene información");
+        }
+        Usuario user = controlUsuario.findUsuario(u.getCodigo());
+        if(user == null){
+            controlUsuario.create(u);
+        }else{
+            throw new Exception("Usuario ya registrado");
+        } 
+    }
+    
+    //Modificar usuario
+    public void modificarUser(Usuario u){
+        try {
+            controlUsuario.edit(u);
+        } catch (NonexistentEntityException ex) {
+            Logger.getLogger(usuarioLog.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(usuarioLog.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    //Eliminar Usuario
+    public void eliminarUser(int codU){
+        try {
+            controlUsuario.destroy(codU);
+        } catch (NonexistentEntityException ex) {
+            Logger.getLogger(usuarioLog.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(usuarioLog.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    //Retorna true o false si un usuario tiene objetivos
+    public boolean usuarioObjetivos(int codU){
+        listUsers = controlUsuario.findUsuarioEntities();
+        listObj = controlObjetivo.findObjetivoEntities();
+        Usuario userR = new Usuario();
+        boolean hay = false;
+        
+        for(Usuario u: listUsers){
+            if(u.getCodigo() == codU){
+                userR = u;
+              }
+          }
+        for(Objetivo o: listObj){
+            if(o.getCodUsuario().getCodigo() == userR.getCodigo()){
+                hay = true;
+            }
+        }
+        return hay;
+    }
+    
     //Retorna el area de un usuario
     public String retornarArea(int codigoU){
         listUsers = controlUsuario.findUsuarioEntities();
@@ -67,69 +149,6 @@ public class usuarioLog {
         return nameUser;
     }
     
-    //Retorna la descripcion de cualquier cosa
-    public String retornarDescripcion(int codigoU, String necesito){
-        listUsers = controlUsuario.findUsuarioEntities();
-        Usuario userR = new Usuario();
-        listObj = controlObjetivo.findObjetivoEntities();
-        Objetivo obj = new Objetivo();
-        listInd = controlIndicador.findIndicadorEntities();
-        listInic = controlIniciativa.findIniciativaEntities();  
-        listMeta = controlMeta.findMetaEntities(); 
-        String descripcion = "";
-        
-        for(Usuario u: listUsers){
-            if(u.getCodigo() == codigoU){
-                userR = u;
-              }
-          }
-        for(Objetivo o: listObj){
-            if(o.getCodUsuario().getCodigo() == userR.getCodigo()){
-                obj = o;
-            }
-        }
-        
-        
-        if(necesito.equals("Objetivo")){
-            for(Objetivo ob: listObj){
-                if(ob.getCodUsuario().getCodigo() == userR.getCodigo()){
-                    descripcion = ob.getDescripcion();
-                }
-            }
-        }
-        
-        else if(necesito.equals("Meta")){
-            for(Meta m: listMeta){
-                if(m.getCodObj().getCodObjetivo() == obj.getCodObjetivo()){
-                    descripcion = m.getDescripcion();
-                }
-            }
-        }
-        
-        else if(necesito.equals("Iniciativa")){
-            for(Iniciativa i: listInic){
-                if(i.getCodObj().getCodObjetivo() == obj.getCodObjetivo()){
-                    descripcion = i.getDescripcion();
-                }
-            }
-        }
-        
-        else if(necesito.equals("Indicador")){
-            for(Indicador in: listInd){
-                if(in.getCodObj().getCodObjetivo() == obj.getCodObjetivo()){
-                    System.out.println("Indicador");
-                    descripcion = in.getDescripcion();
-                }
-            }
-        }
-        
-        else{
-            System.out.println("Descripcion no encontrada");
-        }
-        
-        return descripcion;
-    }
-    
     //Retorna la cantidad de objetivos creados por un usuario
     public int cantidadObj(int codU){
         listUsers = controlUsuario.findUsuarioEntities();
@@ -143,7 +162,7 @@ public class usuarioLog {
               }
           }
         for(Objetivo o: listObj){
-            if(o.getCodUsuario().getCodigo() == userR.getCodigo()){
+            if(o.getCodUsuario().getTipoArea().equals(userR.getTipoArea())){
                 cantidad++;
             }
         }

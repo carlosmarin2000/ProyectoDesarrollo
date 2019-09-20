@@ -5,6 +5,8 @@
  */
 package vista;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Lenovo
@@ -30,38 +32,38 @@ public class Admin extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        crearU = new javax.swing.JButton();
+        consultarU = new javax.swing.JButton();
+        eliminarU = new javax.swing.JButton();
         ingBSC = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        atras = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Administrador");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 10, 177, 27));
 
-        jButton1.setText("Crear Usuario");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        crearU.setText("Crear Usuario");
+        crearU.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                crearUActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 60, -1, -1));
 
-        jButton2.setText("Consultar Usuario");
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 60, -1, -1));
-
-        jButton3.setText("Eliminar Usuario");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        consultarU.setText("Consultar Usuario");
+        consultarU.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                consultarUActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 60, -1, -1));
+
+        eliminarU.setText("Eliminar Usuario");
+        eliminarU.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                eliminarUActionPerformed(evt);
+            }
+        });
 
         ingBSC.setText("Ingresar al BSC");
         ingBSC.addActionListener(new java.awt.event.ActionListener() {
@@ -69,31 +71,88 @@ public class Admin extends javax.swing.JFrame {
                 ingBSCActionPerformed(evt);
             }
         });
-        getContentPane().add(ingBSC, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 100, -1, -1));
 
-        jButton5.setText("Atras");
-        getContentPane().add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+        atras.setText("Atras");
+        atras.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                atrasActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(atras)
+                        .addGap(111, 111, 111)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(60, 60, 60)
+                        .addComponent(crearU)
+                        .addGap(41, 41, 41)
+                        .addComponent(consultarU)
+                        .addGap(43, 43, 43)
+                        .addComponent(eliminarU))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(200, 200, 200)
+                        .addComponent(ingBSC)))
+                .addContainerGap(76, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(atras)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(23, 23, 23)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(crearU)
+                    .addComponent(consultarU)
+                    .addComponent(eliminarU))
+                .addGap(17, 17, 17)
+                .addComponent(ingBSC)
+                .addContainerGap(34, Short.MAX_VALUE))
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void crearUActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crearUActionPerformed
         crearUser cU  = new crearUser();
         cU.setVisible(true);
         dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_crearUActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void eliminarUActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarUActionPerformed
         eliminarUser eU  = new eliminarUser();
         eU.setVisible(true);
         dispose();
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_eliminarUActionPerformed
 
     private void ingBSCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ingBSCActionPerformed
         BSC bsc  = new BSC();
         bsc.setVisible(true);
         dispose();
     }//GEN-LAST:event_ingBSCActionPerformed
+
+    private void consultarUActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultarUActionPerformed
+        String idUser = JOptionPane.showInputDialog(null, "Ingrese el codigo o cedula del Usuario", 
+                        "Consultar Usuario", JOptionPane.INFORMATION_MESSAGE);
+        modificarUsuario modUser = new modificarUsuario(idUser);
+        modUser.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_consultarUActionPerformed
+
+    private void atrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_atrasActionPerformed
+        Login log = new Login();
+        log.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_atrasActionPerformed
 
     /**
      * @param args the command line arguments
@@ -131,11 +190,11 @@ public class Admin extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton atras;
+    private javax.swing.JButton consultarU;
+    private javax.swing.JButton crearU;
+    private javax.swing.JButton eliminarU;
     private javax.swing.JButton ingBSC;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }

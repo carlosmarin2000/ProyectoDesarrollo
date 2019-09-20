@@ -5,18 +5,86 @@
  */
 package vista;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import logica.indicadorLog;
+import logica.iniciativaLog;
+import logica.metaLog;
+import logica.objetivoLog;
+import logica.usuarioLog;
+import modelo.Indicador;
+import modelo.Iniciativa;
+import modelo.Meta;
+import modelo.Objetivo;
+import modelo.Usuario;
+
 /**
  *
  * @author Lenovo
  */
 public class areaProcInt extends javax.swing.JFrame {
-
-    /**
-     * Creates new form areaProcInt
-     */
-    public areaProcInt() {
+    
+    private objetivoLog objLog = new objetivoLog();
+    private indicadorLog indLog = new indicadorLog();
+    private iniciativaLog iniLog = new iniciativaLog();
+    private metaLog metLog = new metaLog();
+    private usuarioLog usuLog = new usuarioLog();
+    int codUser;
+    int ingresa;
+    int contadorCod, contadorInd;
+    
+    public areaProcInt(int cUser, int opcion) {
+        super(".:Procesos Internos:.");
+        codUser = cUser;
+        ingresa = 1;
+        contadorCod = 30 + usuLog.cantidadObj(codUser);
+        contadorInd = indLog.cantidadI(codUser);
+        contadorInd++;
         initComponents();
+        
+        if(opcion == 1){
+            save.setEnabled(false);
+        }
+        else if(opcion == 2){
+            agregar.setEnabled(false);
+        }
+        else{
+            save.setEnabled(false);
+            agregar.setEnabled(false);
+        }
+        
+        this.setLocationRelativeTo(null);
     }
+    
+    public areaProcInt(int opcion){
+        super(".:Procesos Internos:.");
+        initComponents();
+        ingresa = 2;
+        codUser = 12000;
+        contadorCod = 30 + usuLog.cantidadObj(codUser);
+        contadorInd = indLog.cantidadI(codUser);
+        contadorInd++;
+        this.setLocationRelativeTo(null);
+        
+        if(opcion == 1){
+            save.setEnabled(false);
+        }
+        else if(opcion == 2){
+            agregar.setEnabled(false);
+        }
+        else{
+            save.setEnabled(false);
+            agregar.setEnabled(false);
+        }
+    }
+    
+    public areaProcInt(){
+        super(".:Procesos Internos:.");
+        initComponents();
+        ingresa = 2;
+        this.setLocationRelativeTo(null);
+    } 
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -28,21 +96,21 @@ public class areaProcInt extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        atras = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        obj = new javax.swing.JTextArea();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea2 = new javax.swing.JTextArea();
+        ind = new javax.swing.JTextArea();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTextArea3 = new javax.swing.JTextArea();
+        meta = new javax.swing.JTextArea();
         jScrollPane4 = new javax.swing.JScrollPane();
-        jTextArea4 = new javax.swing.JTextArea();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        inic = new javax.swing.JTextArea();
+        save = new javax.swing.JButton();
+        agregar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -50,7 +118,12 @@ public class areaProcInt extends javax.swing.JFrame {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Procesos Internos");
 
-        jButton1.setText("Atras");
+        atras.setText("Atras");
+        atras.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                atrasActionPerformed(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -68,32 +141,37 @@ public class areaProcInt extends javax.swing.JFrame {
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel5.setText("Iniciativa:");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        obj.setColumns(20);
+        obj.setRows(5);
+        jScrollPane1.setViewportView(obj);
 
-        jTextArea2.setColumns(20);
-        jTextArea2.setRows(5);
-        jScrollPane2.setViewportView(jTextArea2);
+        ind.setColumns(20);
+        ind.setRows(5);
+        jScrollPane2.setViewportView(ind);
 
-        jTextArea3.setColumns(20);
-        jTextArea3.setRows(5);
-        jScrollPane3.setViewportView(jTextArea3);
+        meta.setColumns(20);
+        meta.setRows(5);
+        jScrollPane3.setViewportView(meta);
 
-        jTextArea4.setColumns(20);
-        jTextArea4.setRows(5);
-        jScrollPane4.setViewportView(jTextArea4);
+        inic.setColumns(20);
+        inic.setRows(5);
+        jScrollPane4.setViewportView(inic);
 
-        jButton2.setText("Guardar");
+        save.setText("Modificar");
 
-        jButton3.setText("Guardar Plantilla");
+        agregar.setText("Agregar");
+        agregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                agregarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jButton1)
+                .addComponent(atras)
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -115,16 +193,16 @@ public class areaProcInt extends javax.swing.JFrame {
                             .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 410, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(25, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
-                .addGap(76, 76, 76)
-                .addComponent(jButton2)
+                .addGap(111, 111, 111)
+                .addComponent(save)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton3)
+                .addComponent(agregar)
                 .addGap(123, 123, 123))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jButton1)
+                .addComponent(atras)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -146,13 +224,149 @@ public class areaProcInt extends javax.swing.JFrame {
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3))
+                    .addComponent(save)
+                    .addComponent(agregar))
                 .addContainerGap(17, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void atrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_atrasActionPerformed
+        if(ingresa == 1){
+            BSC bsc = new BSC(codUser);
+            bsc.setVisible(true);
+            dispose();
+        }
+        else{
+            BSC bsc = new BSC();
+            bsc.setVisible(true);
+            dispose();
+        }
+    }//GEN-LAST:event_atrasActionPerformed
+
+    private void agregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarActionPerformed
+        if(ingresa == 1){
+            if(obj.getText().equals("") || ind.getText().equals("") || meta.getText().equals("") || inic.getText().equals("")){
+                JOptionPane.showMessageDialog(null,"Por favor llene todos los campos.");
+            }
+            else{
+                //Creamos un objetivo
+                Objetivo ob = new Objetivo();
+
+                ob.setCodObjetivo(contadorCod);
+                Usuario us = new Usuario();
+                us = usuLog.consultarUser(codUser);
+                ob.setCodUsuario(us);
+                ob.setDescripcion(obj.getText());
+
+                try {
+                    objLog.crearObj(ob);
+                } catch (Exception ex) {
+                    Logger.getLogger(areaProcInt.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+                //Creamos un indicador
+                Indicador in = new Indicador();
+                in.setCodIndicador(contadorInd);
+                in.setCodObj(ob);
+                in.setDescripcion(ind.getText());
+
+                try {
+                    indLog.crearInd(in);
+                } catch (Exception ex) {
+                    Logger.getLogger(areaProcInt.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+                //Creamos una meta
+                Meta me = new Meta();
+                me.setCodigoMeta(contadorInd);
+                me.setCodObj(ob);
+                me.setDescripcion(meta.getText());
+
+                try {
+                    metLog.crearMeta(me);
+                } catch (Exception ex) {
+                    Logger.getLogger(areaProcInt.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+                //Creamos una iniciativa
+                Iniciativa ini = new Iniciativa();
+                ini.setCodIniciativa(contadorInd);
+                ini.setCodObj(ob);
+                ini.setDescripcion(inic.getText());
+
+
+                try {
+                    iniLog.crearInic(ini);
+                } catch (Exception ex) {
+                    Logger.getLogger(areaProcInt.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+
+                JOptionPane.showMessageDialog(null,"Agregado");
+
+            }
+        }
+        else{
+            if(obj.getText().equals("") || ind.getText().equals("") || meta.getText().equals("") || inic.getText().equals("")){
+                JOptionPane.showMessageDialog(null,"Por favor llene todos los campos.");
+            }
+            else{
+                //Creamos un Objetivo
+                Objetivo ob = new Objetivo();
+
+                ob.setCodObjetivo(contadorCod);
+                Usuario us = new Usuario();
+                us = usuLog.consultarUser(codUser);
+                ob.setCodUsuario(us);
+                ob.setDescripcion(obj.getText());
+
+                try {
+                    objLog.crearObj(ob);
+                } catch (Exception ex) {
+                    Logger.getLogger(areaFinan.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+                //Creamos un indicador
+                Indicador in = new Indicador();
+                in.setCodIndicador(contadorInd);
+                in.setCodObj(ob);
+                in.setDescripcion(ind.getText());
+
+                try {
+                    indLog.crearInd(in);
+                } catch (Exception ex) {
+                    Logger.getLogger(areaFinan.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+                //Creamos una meta
+                Meta me = new Meta();
+                me.setCodigoMeta(contadorInd);
+                me.setCodObj(ob);
+                me.setDescripcion(meta.getText());
+
+                try {
+                    metLog.crearMeta(me);
+                } catch (Exception ex) {
+                    Logger.getLogger(areaFinan.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+                //Creamos una iniciativa
+                Iniciativa ini = new Iniciativa();
+                ini.setCodIniciativa(contadorInd);
+                ini.setCodObj(ob);
+                ini.setDescripcion(inic.getText());
+
+                try {
+                    iniLog.crearInic(ini);
+                } catch (Exception ex) {
+                    Logger.getLogger(areaFinan.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            }
+        }
+    }//GEN-LAST:event_agregarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -190,9 +404,10 @@ public class areaProcInt extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton agregar;
+    private javax.swing.JButton atras;
+    private javax.swing.JTextArea ind;
+    private javax.swing.JTextArea inic;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -202,9 +417,8 @@ public class areaProcInt extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextArea jTextArea2;
-    private javax.swing.JTextArea jTextArea3;
-    private javax.swing.JTextArea jTextArea4;
+    private javax.swing.JTextArea meta;
+    private javax.swing.JTextArea obj;
+    private javax.swing.JButton save;
     // End of variables declaration//GEN-END:variables
 }

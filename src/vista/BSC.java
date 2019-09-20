@@ -7,8 +7,8 @@ package vista;
 
 import java.util.List;
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
+import logica.indicadorLog;
+import logica.objetivoLog;
 import logica.usuarioLog;
 import modelo.Usuario;
 
@@ -18,79 +18,124 @@ import modelo.Usuario;
  */
 public class BSC extends javax.swing.JFrame {
     private usuarioLog usuLog = new usuarioLog();
+    private objetivoLog objLog = new objetivoLog();
+    private indicadorLog indLog = new indicadorLog();
     private List<Usuario> ListUsuarios;
     String area, nameUs, msgBienvenida;
-    int cantidadRow; //10
+    int cantidadRowF, cantidadRowC, cantidadRowPI, cantidadRowAC; //10
     String matriz[][];
-    int codUsuario;
+    int codUsuario; //Para retornar todos codigos de los usuarios
+    int ingresoDesde; //Para saber desde donde se ingresó
+    int codUser;
+    int seleccionF, seleccionC, seleccionPI, seleccionAC; //Para saber que parte de la tabla escogio el usuario
+    String []descObj;
+    String []desIndi;
+    boolean cli, fin, procI, aprenC;
     /**
      * Creates new form BSC
      */
     public BSC(int user) {
         super(".:BSC:.");
+        initComponents();
+        codUser = user;
+        ingresoDesde = 1;
         area = usuLog.retornarArea(user);
         nameUs = usuLog.retornarNameU(user);
         msgBienvenida = "Bienvenido Señor(a): "+nameUs;
-        initComponents();
+        cli = true;
+        fin = true;
+        procI = true;
+        aprenC = true;
         this.setLocationRelativeTo(null); 
-        cantidadRow = usuLog.cantidadObj(user);
-        matriz = new String[cantidadRow][2];
+        cantidadRowF = 0;
+        cantidadRowC = 0;
+        cantidadRowPI = 0;
+        cantidadRowAC = 0;   
+        codUsuario = 0;
+        ListUsuarios = usuLog.consultar();
         
-        //Llenar tabla clientes************
-        for(int i=0; i<cantidadRow;i++){
-            matriz[i][0] = usuLog.retornarDescripcion(user, "Objetivo");
-            matriz[i][1] = usuLog.retornarDescripcion(user, "Indicador");
-        }
-        
-        tablaC.setModel(new javax.swing.table.DefaultTableModel(
-            matriz,
-            new String [] {
-                "Objetivo", "Indicadores"
+        for(Usuario u: ListUsuarios){
+            codUsuario = u.getCodigo();
+            descObj = objLog.descObjetivos(codUsuario);
+            desIndi = indLog.descIndicador(codUsuario);
+            
+            if(u.getTipoArea().equals("Cliente") && cli){
+                cantidadRowC = usuLog.cantidadObj(codUsuario);
+                matriz = new String[cantidadRowC][2];
+
+                //Llenar tabla clientes************
+                for(int i=0; i<cantidadRowC;i++){
+                    matriz[i][0] = descObj[i];
+                    matriz[i][1] = desIndi[i];
+                }
+
+                tablaC.setModel(new javax.swing.table.DefaultTableModel(
+                    matriz,
+                    new String [] {
+                        "Objetivo", "Indicadores"
+                    }
+                ));
+                cli = false;
+            //*********************************
             }
-        ));
-        //*********************************
-        
-        //Llenar tabla financiero************
-        for(int i=0; i<cantidadRow;i++){
-            matriz[i][0] = usuLog.retornarDescripcion(user, "Objetivo");
-            matriz[i][1] = usuLog.retornarDescripcion(user, "Indicador");
-        }
-        
-        tablaFinanc.setModel(new javax.swing.table.DefaultTableModel(
-            matriz,
-            new String [] {
-                "Objetivo", "Indicadores"
+            else if(u.getTipoArea().equals("Financiero") && fin){
+                cantidadRowF = usuLog.cantidadObj(codUsuario);
+                matriz = new String[cantidadRowF][2];
+                //Llenar tabla financiero************
+                for(int i=0; i<cantidadRowF;i++){
+                    matriz[i][0] = descObj[i];
+                    matriz[i][1] = desIndi[i];
+                }
+
+                tablaFinanc.setModel(new javax.swing.table.DefaultTableModel(
+                    matriz,
+                    new String [] {
+                        "Objetivo", "Indicadores"
+                    }
+                ));
+                fin = false;
+                //***************************************
             }
-        ));
-        //*********************************
-        
-        //Llenar tabla procesos Internos******
-        for(int i=0; i<cantidadRow;i++){
-            matriz[i][0] = usuLog.retornarDescripcion(user, "Objetivo");
-            matriz[i][1] = usuLog.retornarDescripcion(user, "Indicador");
-        }
-        
-        tablaProcI.setModel(new javax.swing.table.DefaultTableModel(
-            matriz,
-            new String [] {
-                "Objetivo", "Indicadores"
+            
+            else if(u.getTipoArea().equals("Procesos Internos") && procI){
+                cantidadRowPI = usuLog.cantidadObj(codUsuario);
+                matriz = new String[cantidadRowPI][2];
+               //Llenar tabla Procesos Internos************
+                for(int i=0; i<cantidadRowPI;i++){
+                    matriz[i][0] = descObj[i];
+                    matriz[i][1] = desIndi[i];
+                }
+
+                tablaProcI.setModel(new javax.swing.table.DefaultTableModel(
+                    matriz,
+                    new String [] {
+                        "Objetivo", "Indicadores"
+                    }
+                ));
+                procI = false;
+                //*************************************** 
             }
-        ));
-        //*********************************
-        
-        //Llenar tabla Aprendizaje y Crecimiento************
-        for(int i=0; i<cantidadRow;i++){
-            matriz[i][0] = usuLog.retornarDescripcion(user, "Objetivo");
-            matriz[i][1] = usuLog.retornarDescripcion(user, "Indicador");
-        }
-        
-        tablaAprenC.setModel(new javax.swing.table.DefaultTableModel(
-            matriz,
-            new String [] {
-                "Objetivo", "Indicadores"
+            
+            else if(u.getTipoArea().equals("Aprendizaje y Crecimiento") && aprenC){
+                cantidadRowAC = usuLog.cantidadObj(codUsuario);
+                matriz = new String[cantidadRowAC][2];
+                //Llenar tabla Aprendizaje y Crecimiento************
+                for(int i=0; i<cantidadRowAC;i++){
+                    matriz[i][0] = descObj[i];
+                    matriz[i][1] = desIndi[i];
+                }
+
+                tablaAprenC.setModel(new javax.swing.table.DefaultTableModel(
+                    matriz,
+                    new String [] {
+                        "Objetivo", "Indicadores"
+                    }
+                ));
+                aprenC = false;
+                //*************************************** 
             }
-        ));
-        //*********************************
+            
+        }
                
         //Bloquear botones de la interfaz
         if(area.equals("Financiero")){
@@ -114,7 +159,7 @@ public class BSC extends javax.swing.JFrame {
             vermoreProcI.setEnabled(false);
         }  
         
-        else if(area.equals("Clientes")){
+        else if(area.equals("Cliente")){
             bienvenido.setText(msgBienvenida);
             //Bloquea los botones del area Aprendizaje y Crecimiento
             agregarAprenC.setEnabled(false);
@@ -181,24 +226,33 @@ public class BSC extends javax.swing.JFrame {
     public BSC(){
         super(".:BSC:.");
         initComponents();
+        ingresoDesde = 2;
         msgBienvenida = "Bienvenido Señor(a): Administrador";
         bienvenido.setText(msgBienvenida);
         this.setLocationRelativeTo(null);
         codUsuario = 0;
-        cantidadRow = 0;
+        cantidadRowF = 0;
+        cantidadRowC = 0;
+        cantidadRowPI = 0;
+        cantidadRowAC = 0; 
+        cli = true;
+        fin = true;
+        procI = true;
+        aprenC = true;
         ListUsuarios = usuLog.consultar();
         
         for(Usuario u: ListUsuarios){
             codUsuario = u.getCodigo();
+            descObj = objLog.descObjetivos(codUsuario);
+            desIndi = indLog.descIndicador(codUsuario);
             
-            if(u.getTipoArea().equals("Cliente")){
-                cantidadRow = usuLog.cantidadObj(codUsuario);
-                matriz = new String[cantidadRow][2];
-
+            if(u.getTipoArea().equals("Cliente") && cli){
+                cantidadRowC = usuLog.cantidadObj(codUsuario);
+                matriz = new String[cantidadRowC][2];
                 //Llenar tabla clientes************
-                for(int i=0; i<cantidadRow;i++){
-                    matriz[i][0] = usuLog.retornarDescripcion(codUsuario, "Objetivo");
-                    matriz[i][1] = usuLog.retornarDescripcion(codUsuario, "Indicador");
+                for(int i=0; i<cantidadRowC;i++){
+                    matriz[i][0] = descObj[i];
+                    matriz[i][1] = desIndi[i];
                 }
 
                 tablaC.setModel(new javax.swing.table.DefaultTableModel(
@@ -207,13 +261,17 @@ public class BSC extends javax.swing.JFrame {
                         "Objetivo", "Indicadores"
                     }
                 ));
+                cli = false;
             //*********************************
             }
-            else if(u.getTipoArea().equals("Financiero")){
+            else if(u.getTipoArea().equals("Financiero") && fin){
+                cantidadRowF = usuLog.cantidadObj(codUsuario);
+                matriz = new String[cantidadRowF][2];
                 //Llenar tabla financiero************
-                for(int i=0; i<cantidadRow;i++){
-                    matriz[i][0] = usuLog.retornarDescripcion(codUsuario, "Objetivo");
-                    matriz[i][1] = usuLog.retornarDescripcion(codUsuario, "Indicador");
+                for(int i=0; i<cantidadRowF;i++){
+                    matriz[i][0] = descObj[i];
+                    matriz[i][1] = desIndi[i];
+                    System.out.println("Matriz--> "+ matriz[i][1]);
                 }
 
                 tablaFinanc.setModel(new javax.swing.table.DefaultTableModel(
@@ -222,14 +280,17 @@ public class BSC extends javax.swing.JFrame {
                         "Objetivo", "Indicadores"
                     }
                 ));
+                fin = false;
                 //***************************************
             }
             
-            else if(u.getTipoArea().equals("Procesos Internos")){
+            else if(u.getTipoArea().equals("Procesos Internos") && procI){
+                cantidadRowPI = usuLog.cantidadObj(codUsuario);
+                matriz = new String[cantidadRowPI][2];
                //Llenar tabla Procesos Internos************
-                for(int i=0; i<cantidadRow;i++){
-                    matriz[i][0] = usuLog.retornarDescripcion(codUsuario, "Objetivo");
-                    matriz[i][1] = usuLog.retornarDescripcion(codUsuario, "Indicador");
+                for(int i=0; i<cantidadRowPI;i++){
+                    matriz[i][0] = descObj[i];
+                    matriz[i][1] = desIndi[i];
                 }
 
                 tablaProcI.setModel(new javax.swing.table.DefaultTableModel(
@@ -238,14 +299,17 @@ public class BSC extends javax.swing.JFrame {
                         "Objetivo", "Indicadores"
                     }
                 ));
+                procI = false;
                 //*************************************** 
             }
             
-            else if(u.getTipoArea().equals("Aprendizaje y Crecimiento")){
+            else if(u.getTipoArea().equals("Aprendizaje y Crecimiento") && aprenC){
+                cantidadRowAC = usuLog.cantidadObj(codUsuario);
+                matriz = new String[cantidadRowAC][2];
                 //Llenar tabla Aprendizaje y Crecimiento************
-                for(int i=0; i<cantidadRow;i++){
-                    matriz[i][0] = usuLog.retornarDescripcion(codUsuario, "Objetivo");
-                    matriz[i][1] = usuLog.retornarDescripcion(codUsuario, "Indicador");
+                for(int i=0; i<cantidadRowAC;i++){
+                    matriz[i][0] = descObj[i];
+                    matriz[i][1] = desIndi[i];
                 }
 
                 tablaAprenC.setModel(new javax.swing.table.DefaultTableModel(
@@ -254,6 +318,7 @@ public class BSC extends javax.swing.JFrame {
                         "Objetivo", "Indicadores"
                     }
                 ));
+                aprenC = false;
                 //*************************************** 
             }
             
@@ -311,6 +376,11 @@ public class BSC extends javax.swing.JFrame {
         bienvenido.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         bienvenido.setText("Bienvenido Señor(a): ");
 
+        tablaC = new javax.swing.JTable(){
+            public boolean isCellEditable(int rowIndex, int colIndex){
+                return false;
+            }
+        };
         tablaC.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         tablaC.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -378,6 +448,11 @@ public class BSC extends javax.swing.JFrame {
             }
         });
 
+        tablaFinanc = new javax.swing.JTable(){
+            public boolean isCellEditable(int rowIndex, int colIndex){
+                return false;
+            }
+        };
         tablaFinanc.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         tablaFinanc.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -387,8 +462,18 @@ public class BSC extends javax.swing.JFrame {
                 "Objetivo", "Indicadores"
             }
         ));
+        tablaFinanc.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaFinancMouseClicked(evt);
+            }
+        });
         jScrollPane3.setViewportView(tablaFinanc);
 
+        tablaProcI = new javax.swing.JTable(){
+            public boolean isCellEditable(int rowIndex, int colIndex){
+                return false;
+            }
+        };
         tablaProcI.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         tablaProcI.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -400,6 +485,11 @@ public class BSC extends javax.swing.JFrame {
         ));
         jScrollPane5.setViewportView(tablaProcI);
 
+        tablaAprenC = new javax.swing.JTable(){
+            public boolean isCellEditable(int rowIndex, int colIndex){
+                return false;
+            }
+        };
         tablaAprenC.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         tablaAprenC.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -574,55 +664,111 @@ public class BSC extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void atrasBSCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_atrasBSCActionPerformed
-        Login inicio  = new Login();
-        inicio.setVisible(true);
-        dispose();
+        if(ingresoDesde == 1){
+            Login inicio  = new Login();
+            inicio.setVisible(true);
+            dispose();
+        }
+        else if(ingresoDesde == 2){
+            Admin ad  = new Admin();
+            ad.setVisible(true);
+            dispose();
+        }
     }//GEN-LAST:event_atrasBSCActionPerformed
 
     private void agregarFinancActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarFinancActionPerformed
-        if(cantidadRow <= 10){
-            areaFinan arF = new areaFinan();
-            arF.setVisible(true);
-            dispose();
+        if(ingresoDesde == 1){
+            if(cantidadRowF <= 10){
+                areaFinan arF = new areaFinan(codUser,1);
+                arF.setVisible(true);
+                dispose();
+            }
+            else{
+                JOptionPane.showMessageDialog(null,"Ya cumplió con el limite de filas(10)");
+            }
         }
-        else{
-            JOptionPane.showMessageDialog(null,"Ya cumplió con el limite de filas(10)");
+        else if(ingresoDesde == 2){
+            if(cantidadRowF <= 10){
+                areaFinan arF = new areaFinan(1);
+                arF.setVisible(true);
+                dispose();
+            }
+            else{
+                JOptionPane.showMessageDialog(null,"Ya cumplió con el limite de filas(10)");
+            }
         }
     }//GEN-LAST:event_agregarFinancActionPerformed
 
     private void agregarProcIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarProcIActionPerformed
-        if(cantidadRow <= 10){
-            areaProcInt arPI = new areaProcInt();
-            arPI.setVisible(true);
-            dispose();
+        if(ingresoDesde == 1){
+            if(cantidadRowPI <= 10){
+                areaProcInt arPC = new areaProcInt(codUser,1);
+                arPC.setVisible(true);
+                dispose();
+            }
+            else{
+                JOptionPane.showMessageDialog(null,"Ya cumplió con el limite de filas(10)");
+            }
         }
-        else{
-            JOptionPane.showMessageDialog(null,"Ya cumplió con el limite de filas(10)");
+        else if(ingresoDesde == 2){
+            if(cantidadRowPI <= 10){
+                areaProcInt arPC = new areaProcInt(1);
+                arPC.setVisible(true);
+                dispose();
+            }
+            else{
+                JOptionPane.showMessageDialog(null,"Ya cumplió con el limite de filas(10)");
+            }
         }
     }//GEN-LAST:event_agregarProcIActionPerformed
 
     private void agregarAprenCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarAprenCActionPerformed
-        if(cantidadRow <= 10){
-            areaAprenyCrec arAC = new areaAprenyCrec();
-            arAC.setVisible(true);
-            dispose();
+        if(ingresoDesde == 1){
+            if(cantidadRowAC <= 10){
+                areaAprenyCrec arAC = new areaAprenyCrec(codUser,1);
+                arAC.setVisible(true);
+                dispose();
+            }
+            else{
+                JOptionPane.showMessageDialog(null,"Ya cumplió con el limite de filas(10)");
+            }
         }
-        else{
-            JOptionPane.showMessageDialog(null,"Ya cumplió con el limite de filas(10)");
+        else if(ingresoDesde == 2){
+            if(cantidadRowAC <= 10){
+                areaAprenyCrec arAC = new areaAprenyCrec(1);
+                arAC.setVisible(true);
+                dispose();
+            }
+            else{
+                JOptionPane.showMessageDialog(null,"Ya cumplió con el limite de filas(10)");
+            }
         }
     }//GEN-LAST:event_agregarAprenCActionPerformed
 
     private void agregarCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarCActionPerformed
-        if(cantidadRow <= 10){
-            areaCliente arC = new areaCliente();
-            arC.setVisible(true);
-            dispose();
+        if(ingresoDesde == 1){
+            if(cantidadRowAC <= 10){
+                areaCliente arC = new areaCliente(codUser,1);
+                arC.setVisible(true);
+                dispose();
+            }
+            else{
+                JOptionPane.showMessageDialog(null,"Ya cumplió con el limite de filas(10)");
+            }
         }
-        else{
-            JOptionPane.showMessageDialog(null,"Ya cumplió con el limite de filas(10)");
+        else if(ingresoDesde == 2){
+            if(cantidadRowAC <= 10){
+                areaCliente arC = new areaCliente(1);
+                arC.setVisible(true);
+                dispose();
+            }
+            else{
+                JOptionPane.showMessageDialog(null,"Ya cumplió con el limite de filas(10)");
+            }
         }
     }//GEN-LAST:event_agregarCActionPerformed
-
+//Fin agregar ***********************************************************************************    
+    
     private void eliminarFinancActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarFinancActionPerformed
         
     }//GEN-LAST:event_eliminarFinancActionPerformed
@@ -640,8 +786,23 @@ public class BSC extends javax.swing.JFrame {
     }//GEN-LAST:event_eliminarCActionPerformed
 
     private void modificarFinancActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modificarFinancActionPerformed
-        
+        if(ingresoDesde == 1){
+            areaFinan arF = new areaFinan(codUser, 2);
+            arF.setVisible(true);
+            arF.selec = 20 + seleccionF;
+            dispose();
+        }
+        else if(ingresoDesde == 2){
+            areaFinan arF = new areaFinan(2);
+            arF.setVisible(true);
+            arF.selec = 20 + seleccionF;
+            dispose();
+        }
     }//GEN-LAST:event_modificarFinancActionPerformed
+
+    private void tablaFinancMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaFinancMouseClicked
+        seleccionF = tablaFinanc.getSelectedRow();
+    }//GEN-LAST:event_tablaFinancMouseClicked
     
     
     /**
